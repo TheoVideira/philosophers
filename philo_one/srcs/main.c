@@ -1,15 +1,26 @@
 #include "philo_one.h"
 
-int main(int argc, char **argv)
+int	main(int ac, char **av)
 {
-	t_parameters parameters;
+	t_parameters params;
+	t_philosopher *philos;
 
-	if (argc < 5 || argc > 6)
+	params.start_time = ft_gettime();
+	if (ac < 5 || ac > 6)
 	{
-		printf("You need between 4 and 5 parameters. You had %d.\n", argc - 1);
+		if (ac < 5)
+			printf("You need at least 4 arguments, you had %d\n", ac - 1);
+		else
+			printf("You need at most 5 arguments, you had %d\n", ac - 1);
+		return(1);
+	}
+	if (!check_inputs(ac, av)
+		|| !init_parameters(&params, av)
+		|| !init_philosophers(&philos, &params))
+	{
+		//function that free everything here.
 		return (1);
 	}
-	if (!check_inputs(argc, argv) || !set_parameters(&parameters, argv))
-			return (1);
+	launch_simulation(philos, &params);
 	return (0);
 }

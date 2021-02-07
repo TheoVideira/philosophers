@@ -1,10 +1,10 @@
 NAME			= philo_one.out
 
 CC				= clang
-CFLAGS			= -Wall -Wextra -Werror
+CFLAGS			= -Wall -Wextra -Werror -pthread
 
 SRCS_DIR		= srcs
-SRCS_FILES		= init.c main.c utils.c
+SRCS_FILES		= init.c main.c utils.c simulation.c
 SRCS			= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 OBJS_DIR		= objs

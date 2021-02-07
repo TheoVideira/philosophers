@@ -1,39 +1,63 @@
 #ifndef PHILO_ONE_H
 # define PHILO_ONE_H
 # include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 # include <pthread.h>
+# include <sys/time.h>
 
-typedef enum		e_status{
-	WAITING,
-	DEAD,
+typedef enum e_status{
+	TAKING_FORKS,
 	EATING,
-	SLEEPING
-}					t_status;
+	SLEEPING,
+	THINKING,
+	DEAD
+}t_status;
 
-typedef struct		s_parameters
+/*
+** Structures
+*/
+typedef struct s_parameters
 {
-	int 			number_of_philosopher;
-	int 			time_to_die;
-	int 			time_to_eat;
-	int 			time_to_sleep;
-	int 			must_eat;
+	int				nb_philos;	
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
+	int				someone_died;
+	long			start_time;
 	pthread_mutex_t	*forks;
-}					t_parameters;
+}t_parameters;
 
-typedef struct		t_philosopher
+typedef struct s_philosopher
 {
 	int				id;
-	int				eaten_meals;
-	unsigned int	last_meal;
-	t_status		status;
-}					s_philosopher;
+	int				meals_eaten;
+	long			last_meal;
+	t_parameters	*parameters;
+	pthread_t 		thread;
+}t_philosopher;
 
 
-/*utils function*/
-int	ft_atoi(const char *str);
+/*
+** Utils function
+*/
+int		ft_atoi(const char *str);
+void	ft_sleep(long milliseconds);
+long	ft_gettime(void);
 
-/*init function*/
-int	check_inputs(int argc, char **argv);
-int set_parameters(t_parameters *parameters, char **argv);
+/*
+** Init function
+*/
+int		check_inputs(int ac, char **av);
+int		init_parameters(t_parameters *parameters, char **av);
+int		init_philosophers(t_philosopher **philos, t_parameters *params);
+void	print_parameters(t_parameters *parameters);
+
+
+/*
+** Simulation function
+*/
+void    launch_simulation(t_philosopher *philos, t_parameters *params);
 
 #endif
