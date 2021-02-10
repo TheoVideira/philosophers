@@ -35,18 +35,19 @@ int		ft_atoi(const char *str)
 
 void	ft_sleep(long milliseconds)
 {
-	long start;
+	/*long start;
 
 	start = ft_gettime();
 	while (ft_gettime() < start + milliseconds)
 	{
 		usleep(125);
-	}
+	}*/
+	usleep(milliseconds * 1000);
 }
 
 long	ft_gettime(void)
 {	
-	struct timeval timeval;
+	static struct timeval timeval;
 	
 	gettimeofday(&timeval, NULL);
 	return (timeval.tv_sec * 1000 + timeval.tv_usec / 1000);	

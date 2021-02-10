@@ -4,7 +4,7 @@ CC				= clang
 CFLAGS			= -Wall -Wextra -Werror -pthread
 
 SRCS_DIR		= srcs
-SRCS_FILES		= init.c main.c utils.c simulation.c
+SRCS_FILES		= init.c main.c utils.c simulation.c stop.c action.c monitor.c print.c
 SRCS			= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 OBJS_DIR		= objs

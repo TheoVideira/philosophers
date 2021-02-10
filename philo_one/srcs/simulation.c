@@ -1,87 +1,52 @@
 #include "philo_one.h"
 
-static void	print_status(int id, long start_time, t_status status)
-{
-	long timestamp;
-
-	id = id + 1;
-	timestamp = ft_gettime() - start_time;
-	if (status == TAKING_FORKS)
-		printf("%10ld %3d has taken a fork\n", timestamp, id);
-	if (status == EATING)
-		printf("%10ld %3d is eating\n", timestamp, id);
-	if (status == SLEEPING)
-		printf("%10ld %3d is sleeping\n", timestamp, id);
-	if (status == THINKING)
-		printf("%10ld %3d is thinking\n", timestamp, id);
-	if (status == DEAD)
-		printf("%10ld %3d died\n", timestamp, id);
-}
-
-static void	get_forks(t_philosopher *philo, t_parameters *params)
-{
-	if (!(philo->id % 2))
-	{
-		pthread_mutex_lock(&(params->forks[philo->id]));
-		print_status(philo->id, params->start_time, TAKING_FORKS);
-		if (!(philo->id))
-			pthread_mutex_lock(&(params->forks[params->nb_philos - 1]));
-		else
-			pthread_mutex_lock(&(params->forks[philo->id - 1]));
-		print_status(philo->id, params->start_time, TAKING_FORKS);
-	}
-	else
-	{
-		pthread_mutex_lock(&(params->forks[philo->id - 1]));
-		print_status(philo->id, params->start_time, TAKING_FORKS);
-		pthread_mutex_lock(&(params->forks[philo->id]));
-		print_status(philo->id, params->start_time, TAKING_FORKS);
-	}
-}
-
-static void	put_forks(t_philosopher *philo, t_parameters *params)
-{
-	pthread_mutex_unlock(&(params->forks[philo->id]));
-	if (!(philo->id))
-		pthread_mutex_unlock(&(params->forks[params->nb_philos - 1]));
-	else
-		pthread_mutex_unlock(&(params->forks[philo->id - 1]));
-
-}
-
 static void	*routine(void *philosopher)
 {
-	t_philosopher	*philo;
+	t_philo_info	*philo;
 	t_parameters	*params;
 
-	philo = (t_philosopher *)philosopher;
+	philo = (t_philo_info *)philosopher;
 	params = philo->parameters;
-	while(!(params->someone_died))
+	while(!(params->someone_died) && !get_stop(params))
 	{
 		get_forks(philo, params);
-		print_status(philo->id, params->start_time, EATING);
-		ft_sleep(params->time_to_eat);
+        eating(philo, params);
 		put_forks(philo, params);
-		print_status(philo->id, params->start_time, SLEEPING);
-		ft_sleep(params->time_to_sleep);
-		print_status(philo->id, params->start_time, THINKING);
+        sleeping(philo, params);
+        thinking(philo, params);				
 	}
-	return NULL;
+	return (NULL);
 }
 
-void		launch_simulation(t_philosopher *philos, t_parameters *params)
+void		launch_simulation
+			(t_philo_info *philo_info, pthread_t *philo, pthread_t *monitor)
 {
 	int	i;
+	t_parameters *params;
 
-	i = -1;
+	params = philo_info[0].parameters;
+	i = 0;
 	params->start_time = ft_gettime();
-	while(++i < params->nb_philos)
+	while(i < params->nb_philos)
 	{
-		philos[i].last_meal = params->start_time;
-		pthread_create(&(philos[i].thread), NULL, routine, &(philos[i]));
+		philo_info[i].last_meal = params->start_time;
+		philo_info[i].meals_eaten = 0;
+		pthread_create(&(philo[i]), NULL, routine, &(philo_info[i]));
+		pthread_create(&(monitor[i]), NULL, monitoring, &(philo_info[i]));
+		i+=2;
+	}
+	i = 1;
+	while(i < params->nb_philos)
+	{
+		philo_info[i].last_meal = params->start_time;
+		philo_info[i].meals_eaten = 0;
+		pthread_create(&(philo[i]), NULL, routine, &(philo_info[i]));
+		pthread_create(&(monitor[i]), NULL, monitoring, &(philo_info[i]));
+		i+=2;
 	}
 	while(--i >= 0)
 	{
-		pthread_join(philos[i].thread, NULL);
-	}
+		pthread_join(philo[i], NULL);
+		pthread_join(monitor[i], NULL);
+	}	
 }

@@ -3,7 +3,9 @@
 int	main(int ac, char **av)
 {
 	t_parameters params;
-	t_philosopher *philos;
+	t_philo_info *philo_info;
+	pthread_t *philo;
+	pthread_t *monitor;
 
 	params.start_time = ft_gettime();
 	if (ac < 5 || ac > 6)
@@ -14,13 +16,13 @@ int	main(int ac, char **av)
 			printf("You need at most 5 arguments, you had %d\n", ac - 1);
 		return(1);
 	}
-	if (!check_inputs(ac, av)
-		|| !init_parameters(&params, av)
-		|| !init_philosophers(&philos, &params))
+	if (!check_inputs(ac, av) || !init_parameters(&params, av)
+		|| !init_threads(&philo, &monitor, &params)
+		|| !init_philosophers(&philo_info, &params))
 	{
 		//function that free everything here.
 		return (1);
 	}
-	launch_simulation(philos, &params);
+	launch_simulation(philo_info, philo, monitor);
 	return (0);
 }

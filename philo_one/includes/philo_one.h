@@ -25,39 +25,71 @@ typedef struct s_parameters
 	int				time_to_sleep;
 	int				must_eat;
 	int				someone_died;
+	int				stop;
 	long			start_time;
+	pthread_mutex_t print_lock;
+	pthread_mutex_t stop_lock;
 	pthread_mutex_t	*forks;
+	pthread_mutex_t	*protection;
 }t_parameters;
 
-typedef struct s_philosopher
+typedef struct s_philo_info
 {
 	int				id;
 	int				meals_eaten;
 	long			last_meal;
 	t_parameters	*parameters;
-	pthread_t 		thread;
-}t_philosopher;
+}t_philo_info;
 
 
 /*
-** Utils function
+** Utils functions
 */
 int		ft_atoi(const char *str);
 void	ft_sleep(long milliseconds);
 long	ft_gettime(void);
 
 /*
-** Init function
+** Init functions
 */
 int		check_inputs(int ac, char **av);
 int		init_parameters(t_parameters *parameters, char **av);
-int		init_philosophers(t_philosopher **philos, t_parameters *params);
+int		init_philosophers(t_philo_info **philos, t_parameters *params);
 void	print_parameters(t_parameters *parameters);
-
+int		init_threads
+			(pthread_t **philo, pthread_t **monitor, t_parameters *params);
 
 /*
 ** Simulation function
 */
-void    launch_simulation(t_philosopher *philos, t_parameters *params);
+void    launch_simulation
+			(t_philo_info *philo_info, pthread_t *philo, pthread_t *monitor);
+
+
+/*
+** Action functions
+*/
+void	get_forks(t_philo_info *philo, t_parameters *params);
+void	put_forks(t_philo_info *philo, t_parameters *params);
+void	eating(t_philo_info *philo, t_parameters *params);
+void	sleeping(t_philo_info *philo, t_parameters *params);
+void	thinking(t_philo_info *philo, t_parameters *params);
+
+
+/*
+** Print function
+*/
+void	print_status(int id, t_parameters *params, t_status status);
+
+/*
+** Monitor function
+*/
+void    *monitoring(void *philosopher);
+
+/*
+** Stop functions
+*/
+void	inc_stop(t_parameters *params);
+int		get_stop(t_parameters *params);
 
 #endif

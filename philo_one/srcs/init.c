@@ -34,39 +34,44 @@ int	init_parameters(t_parameters *params, char **av)
 	else
 		params->must_eat = ft_atoi(av[5]);
 	params->someone_died = 0;
+	params->stop = 0;
 	params->forks = malloc(sizeof(pthread_mutex_t) * params->nb_philos);
-	if (!(params->forks))
+	params->protection = malloc(sizeof(pthread_mutex_t) * params->nb_philos);
+	if (!(params->forks) || !(params->protection))
 		return (0);
 	i = -1;
 	while (++i < params->nb_philos)
+	{
 		pthread_mutex_init(&(params->forks[i]), 0);
+		pthread_mutex_init(&(params->protection[i]), 0);
+	}
+	pthread_mutex_init(&(params->print_lock), 0);
+	pthread_mutex_init(&(params->stop_lock), 0);
 	return (1);
 }
 
-int		init_philosophers(t_philosopher **philos, t_parameters *params)
+int	init_philosophers(t_philo_info **philo_info, t_parameters *params)
 {
 	int i;
 
 	i = -1;
-	*philos = malloc(sizeof(t_philosopher) * params->nb_philos);
-	if (!(*philos))
+	*philo_info = malloc(sizeof(t_philo_info) * params->nb_philos);
+	if (!(*philo_info))
 		return (0);
 	while(++i < params->nb_philos)
 	{
-		(*philos)[i].id = i;
-		(*philos)[i].meals_eaten = 0;
-		(*philos)[i].parameters = params;
+		(*philo_info)[i].id = i;
+		(*philo_info)[i].meals_eaten = 0;
+		(*philo_info)[i].parameters = params;
 	}
 	return (1);
 }
 
-void	print_parameters(t_parameters *parameters)
+int	init_threads(pthread_t **philo, pthread_t **monitor, t_parameters *params)
 {
-	printf("N_P = %d\n", parameters->nb_philos);
-	printf("TTD = %d\n", parameters->time_to_die);
-	printf("TTE = %d\n", parameters->time_to_eat);
-	printf("TTS = %d\n", parameters->time_to_sleep);
-	printf("MMS = %d\n", parameters->must_eat);
-	printf("SD? = %d\n", parameters->someone_died);
-	printf("Time elapsed since beggining = %ld ms\n", ft_gettime() - parameters->start_time);
+	*philo = malloc(sizeof(t_philo_info) * params->nb_philos);
+	*monitor = malloc(sizeof(t_philo_info) * params->nb_philos);
+	if (!(*philo) || !(*monitor))
+		return (0);
+	return (1);
 }
