@@ -1,10 +1,19 @@
 #ifndef PHILO_ONE_H
 # define PHILO_ONE_H
+
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <fcntl.h>
+# include <sys/stat.h>
+# include <semaphore.h>
+
+# define SEM_FORKS "/forks"
+# define SEM_PRINT "/print"
+# define SEM_STOP "/stop"
+# define SEM_PROTEC_PREFIX "/protection_"
 
 typedef enum e_status{
 	TAKING_FORKS,
@@ -19,18 +28,19 @@ typedef enum e_status{
 */
 typedef struct s_parameters
 {
-	int				nb_philos;	
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				must_eat;
-	int				someone_died;
-	int				stop;
-	long			start_time;
-	pthread_mutex_t	print_lock;
-	pthread_mutex_t	stop_lock;
-	pthread_mutex_t	*forks;
-	pthread_mutex_t	*protection;
+	int		nb_philos;	
+	int		time_to_die;
+	int		time_to_eat;
+	int		time_to_sleep;
+	int		must_eat;
+	int		someone_died;
+	int		stop;
+	long	start_time;
+	sem_t	*print_lock;
+	sem_t	*stop_lock;
+	sem_t	*forks;
+	sem_t	**protection;
+	char	**protec_name;
 }t_parameters;
 
 typedef struct s_philo_info
@@ -48,6 +58,19 @@ typedef struct s_philo_info
 int		ft_atoi(const char *str);
 void	ft_sleep(long milliseconds);
 long	ft_gettime(void);
+
+/*
+** Utils2 functions
+*/
+int		ft_uint_len(unsigned int n);
+void	ft_uitoa(unsigned int n, char *str);
+size_t	ft_strlen(const char *s);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+/*
+** Utils3 functions
+*/
+void	*ft_calloc(size_t count, size_t size);
 
 /*
 ** Init functions
@@ -70,7 +93,7 @@ void    launch_simulation
 ** Action functions
 */
 void	get_forks(t_philo_info *philo, t_parameters *params);
-void	put_forks(t_philo_info *philo, t_parameters *params);
+void	put_forks(t_parameters *params);
 void	eating(t_philo_info *philo, t_parameters *params);
 void	sleeping(t_philo_info *philo, t_parameters *params);
 void	thinking(t_philo_info *philo, t_parameters *params);
@@ -98,5 +121,9 @@ int		get_stop(t_parameters *params);
 void	ft_destroy(t_parameters *params, t_philo_info **ph_info,
 			pthread_t **philo, pthread_t **monitor);
 
+/*
+** Semaphore function
+*/
+int		create_semaphores(t_parameters *params);
 
 #endif

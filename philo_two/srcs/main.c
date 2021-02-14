@@ -1,4 +1,4 @@
-#include "philo_one.h"
+#include "philo_two.h"
 
 int	main(int ac, char **av)
 {

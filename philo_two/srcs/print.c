@@ -1,14 +1,14 @@
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	print_status(int id, t_parameters *params, t_status status)
 {
 	long start_time;
 	long timestamp;
 
-	pthread_mutex_lock(&(params->print_lock));
+	sem_wait(params->print_lock);
 	if (status != DEAD && ((params->someone_died) || get_stop(params)))
 	{
-		pthread_mutex_unlock(&(params->print_lock));
+		sem_post(params->print_lock);
 		return ;
 	}
 	start_time = params->start_time;
@@ -24,5 +24,5 @@ void	print_status(int id, t_parameters *params, t_status status)
 		printf("%10ld %3d is thinking\n", timestamp, id);
 	if (status == DEAD)
 		printf("%10ld %3d died\n", timestamp, id);
-	pthread_mutex_unlock(&(params->print_lock));
+	sem_post(params->print_lock);
 }

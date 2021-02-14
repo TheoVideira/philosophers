@@ -1,10 +1,10 @@
-NAME			= philo_one.out
+NAME			= philo_two.out
 
 CC				= clang
 CFLAGS			= -Wall -Wextra -Werror -pthread
 
 SRCS_DIR		= srcs
-SRCS_FILES		= init.c main.c utils.c simulation.c stop.c action.c monitor.c print.c destroy.c
+SRCS_FILES		= init.c main.c utils.c simulation.c stop.c action.c monitor.c print.c destroy.c semaphores.c utils2.c
 SRCS			= $(addprefix $(SRCS_DIR)/, $(SRCS_FILES))
 
 OBJS_DIR		= objs
@@ -12,7 +12,7 @@ OBJS_FILES		= $(SRCS_FILES:.c=.o)
 OBJS			= $(addprefix $(OBJS_DIR)/, $(OBJS_FILES))
 
 HEADERS_DIR		= includes
-HEADERS_FILES	= philo_one.h
+HEADERS_FILES	= philo_two.h
 HEADERS			= $(addprefix $(HEADERS_DIR)/, $(HEADERS_FILES))
 
 all: $(NAME)

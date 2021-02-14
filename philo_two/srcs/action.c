@@ -1,28 +1,22 @@
-#include "philo_one.h"
+#include "philo_two.h"
 
 void	get_forks(t_philo_info *philo, t_parameters *params)
 {
-	pthread_mutex_lock(&(params->forks[philo->id]));
+	sem_wait(params->forks);
 	print_status(philo->id, params, TAKING_FORKS);
-	if (!(philo->id))
-		pthread_mutex_lock(&(params->forks[params->nb_philos - 1]));
-	else
-		pthread_mutex_lock(&(params->forks[philo->id - 1]));
+	sem_wait(params->forks);	
 	print_status(philo->id, params, TAKING_FORKS);
 }
 
-void	put_forks(t_philo_info *philo, t_parameters *params)
+void	put_forks(t_parameters *params)
 {
-	pthread_mutex_unlock(&(params->forks[philo->id]));
-	if (!(philo->id))
-		pthread_mutex_unlock(&(params->forks[params->nb_philos - 1]));
-	else
-		pthread_mutex_unlock(&(params->forks[philo->id - 1]));
+	sem_post(params->forks);
+	sem_post(params->forks);
 }
 
 void	eating(t_philo_info *philo, t_parameters *params)
 {
-	pthread_mutex_lock(&(params->protection[philo->id]));
+	sem_wait(params->protection[philo->id]);
 	print_status(philo->id, params, EATING);
 	if (params->must_eat)
 		(philo->meals_eaten)++;
@@ -30,7 +24,7 @@ void	eating(t_philo_info *philo, t_parameters *params)
 		inc_stop(params);
 	philo->last_meal = ft_gettime();
 	ft_sleep(params->time_to_eat);
-    pthread_mutex_unlock(&(params->protection[philo->id]));
+    sem_post(params->protection[philo->id]);
 }
 
 void	sleeping(t_philo_info *philo, t_parameters *params)
