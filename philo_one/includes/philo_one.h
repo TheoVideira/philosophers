@@ -62,8 +62,8 @@ int		init_threads
 /*
 ** Simulation function
 */
-void    launch_simulation
-			(t_philo_info *philo_info, pthread_t *philo, pthread_t *monitor);
+void	launch_simulation(t_philo_info *philo_info, pthread_t *philo,
+			pthread_t *monitor, int nb_philos);
 
 
 /*
@@ -93,9 +93,11 @@ void	inc_stop(t_parameters *params);
 int		get_stop(t_parameters *params);
 
 /*
-** Destroy function
+** Destroy functions
 */
 void	ft_destroy(t_parameters *params, t_philo_info **ph_info,
+			pthread_t **philo, pthread_t **monitor);
+void	ft_failsafe(t_parameters *params, t_philo_info **ph_info,
 			pthread_t **philo, pthread_t **monitor);
 
 

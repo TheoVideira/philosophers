@@ -50,3 +50,16 @@ void		ft_destroy(t_parameters *params, t_philo_info **ph_info,
 		free(params->protec_name);
 	}
 }
+
+void		ft_failsafe(t_parameters *params, t_philo_info **ph_info,
+					pthread_t **philo, pthread_t **monitor)
+{
+	params->print_lock = NULL;
+	params->stop_lock = NULL;
+	params->forks = NULL;
+	params->protection = NULL;
+	params->protec_name = NULL;
+	*philo = NULL;
+	*monitor = NULL;
+	*ph_info = NULL;
+}

@@ -18,8 +18,11 @@ static void	ft_destroy_mutex(t_parameters *params)
 			pthread_mutex_destroy(&(params->protection[i]));
 		free(params->protection);
 	}
-	pthread_mutex_destroy(&(params->print_lock));
-	pthread_mutex_destroy(&(params->stop_lock));
+	if (params->forks && params->protection)
+	{
+		pthread_mutex_destroy(&(params->print_lock));
+		pthread_mutex_destroy(&(params->stop_lock));
+	}
 }
 
 void		ft_destroy(t_parameters *params, t_philo_info **ph_info,
@@ -32,4 +35,14 @@ void		ft_destroy(t_parameters *params, t_philo_info **ph_info,
 		free(*philo);
 	if (*monitor)
 		free(*monitor);
+}
+
+void		ft_failsafe(t_parameters *params, t_philo_info **ph_info,
+					pthread_t **philo, pthread_t **monitor)
+{
+	params->forks = NULL;
+	params->protection = NULL;
+	*philo = NULL;
+	*monitor = NULL;
+	*ph_info = NULL;
 }

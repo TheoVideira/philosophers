@@ -18,33 +18,28 @@ static void	*routine(void *philosopher)
 	return (NULL);
 }
 
-void		launch_simulation
-			(t_philo_info *philo_info, pthread_t *philo, pthread_t *monitor)
+void		launch_simulation(t_philo_info *philo_info, pthread_t *philo,
+				pthread_t *monitor, int nb_philos)
 {
 	int	i;
-	t_parameters *params;
 
-	params = philo_info[0].parameters;
 	i = 0;
-	params->start_time = ft_gettime();
-	while(i < params->nb_philos)
+	while(i < nb_philos)
 	{
-		philo_info[i].last_meal = params->start_time;
-		philo_info[i].meals_eaten = 0;
 		pthread_create(&(philo[i]), NULL, routine, &(philo_info[i]));
 		pthread_create(&(monitor[i]), NULL, monitoring, &(philo_info[i]));
 		i+=2;
 	}
+	ft_sleep(1);
 	i = 1;
-	while(i < params->nb_philos)
+	while(i < nb_philos)
 	{
-		philo_info[i].last_meal = params->start_time;
-		philo_info[i].meals_eaten = 0;
 		pthread_create(&(philo[i]), NULL, routine, &(philo_info[i]));
 		pthread_create(&(monitor[i]), NULL, monitoring, &(philo_info[i]));
 		i+=2;
 	}
-	while(--i >= 0)
+	i = -1;
+	while(++i < nb_philos)
 	{
 		pthread_join(philo[i], NULL);
 		pthread_join(monitor[i], NULL);

@@ -44,11 +44,13 @@ int	init_philosophers(t_philo_info **philo_info, t_parameters *params)
 	*philo_info = malloc(sizeof(t_philo_info) * params->nb_philos);
 	if (!(*philo_info))
 		return (0);
+	params->start_time = ft_gettime();
 	while(++i < params->nb_philos)
 	{
 		(*philo_info)[i].id = i;
 		(*philo_info)[i].meals_eaten = 0;
 		(*philo_info)[i].parameters = params;
+		(*philo_info)[i].last_meal = params->start_time;
 	}
 	return (1);
 }

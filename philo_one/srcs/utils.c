@@ -40,7 +40,7 @@ void	ft_sleep(long milliseconds)
 	start = ft_gettime();
 	while (ft_gettime() < start + milliseconds)
 	{
-		usleep(250);
+		usleep(500);
 	}
 }
 

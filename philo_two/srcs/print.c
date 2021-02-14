@@ -6,7 +6,7 @@ void	print_status(int id, t_parameters *params, t_status status)
 	long timestamp;
 
 	sem_wait(params->print_lock);
-	if (status != DEAD && ((params->someone_died) || get_stop(params)))
+	if (params->someone_died)
 	{
 		sem_post(params->print_lock);
 		return ;
@@ -23,6 +23,9 @@ void	print_status(int id, t_parameters *params, t_status status)
 	if (status == THINKING)
 		printf("%10ld %3d is thinking\n", timestamp, id);
 	if (status == DEAD)
+	{
 		printf("%10ld %3d died\n", timestamp, id);
+		params->someone_died = 1;
+	}
 	sem_post(params->print_lock);
 }

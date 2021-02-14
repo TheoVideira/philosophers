@@ -22,12 +22,11 @@ void	put_forks(t_philo_info *philo, t_parameters *params)
 
 void	eating(t_philo_info *philo, t_parameters *params)
 {
-	pthread_mutex_lock(&(params->protection[philo->id]));
-	print_status(philo->id, params, EATING);
-	if (params->must_eat)
-		(philo->meals_eaten)++;
+	pthread_mutex_lock(&(params->protection[philo->id]));	
+	(philo->meals_eaten)++;
 	if (params->must_eat && philo->meals_eaten == params->must_eat)
 		inc_stop(params);
+	print_status(philo->id, params, EATING);
 	philo->last_meal = ft_gettime();
 	ft_sleep(params->time_to_eat);
     pthread_mutex_unlock(&(params->protection[philo->id]));
