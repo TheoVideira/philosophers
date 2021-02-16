@@ -2,10 +2,10 @@
 
 int	main(int ac, char **av)
 {
-	t_parameters params;
-	t_philo_info *philo_info;
-	pthread_t *philo;
-	pthread_t *monitor;
+	t_parameters	params;
+	t_philo_info	*philo_info;
+	pthread_t		*philo;
+	pthread_t		*monitor;
 
 	if (ac < 5 || ac > 6)
 	{

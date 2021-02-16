@@ -1,5 +1,5 @@
-#ifndef PHILO_TWO_H
-# define PHILO_TWO_H
+#ifndef PHILO_THREE_H
+# define PHILO_THREE_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -9,11 +9,16 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <semaphore.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define SEM_FORKS "/forks"
 # define SEM_PRINT "/print"
 # define SEM_STOP "/stop"
 # define SEM_PROTEC_PREFIX "/protection_"
+
+# define EXIT_DIED 42 
 
 typedef enum e_status{
 	TAKING_FORKS,
@@ -80,13 +85,13 @@ int		init_parameters(t_parameters *parameters, char **av);
 int		init_philosophers(t_philo_info **philos, t_parameters *params);
 void	print_parameters(t_parameters *parameters);
 int		init_threads
-			(pthread_t **philo, pthread_t **monitor, t_parameters *params);
+			(pid_t **philo, t_parameters *params);
 
 /*
 ** Simulation function
 */
-void	launch_simulation(t_philo_info *philo_info, pthread_t *philo,
-			pthread_t *monitor, int nb_philos);
+void	launch_simulation(t_philo_info *philo_info, pid_t **philo,
+			int nb_philos);
 
 /*
 ** Action functions
@@ -118,9 +123,9 @@ int		get_stop(t_parameters *params);
 ** Destroy function
 */
 void	ft_destroy(t_parameters *params, t_philo_info **ph_info,
-			pthread_t **philo, pthread_t **monitor);
+			pid_t **philo);
 void	ft_failsafe(t_parameters *params, t_philo_info **ph_info,
-					pthread_t **philo, pthread_t **monitor);
+			pid_t **philo);
 
 /*
 ** Semaphore function
