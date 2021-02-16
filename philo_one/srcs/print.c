@@ -1,8 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 16:34:54 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 16:35:32 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 void	print_status(int id, t_parameters *params, t_status status)
 {
-	long start_time;
 	long timestamp;
 
 	pthread_mutex_lock(&(params->print_lock));
@@ -11,9 +22,8 @@ void	print_status(int id, t_parameters *params, t_status status)
 		pthread_mutex_unlock(&(params->print_lock));
 		return ;
 	}
-	start_time = params->start_time;
 	id = id + 1;
-	timestamp = ft_gettime() - start_time;
+	timestamp = ft_gettime() - params->start_time;
 	if (status == TAKING_FORKS)
 		printf("%10ld %3d has taken a fork\n", timestamp, id);
 	if (status == EATING)

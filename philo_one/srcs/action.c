@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   action.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 16:31:49 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 16:32:24 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 void	get_forks(t_philo_info *philo, t_parameters *params)
@@ -22,14 +34,14 @@ void	put_forks(t_philo_info *philo, t_parameters *params)
 
 void	eating(t_philo_info *philo, t_parameters *params)
 {
-	pthread_mutex_lock(&(params->protection[philo->id]));	
+	pthread_mutex_lock(&(params->protection[philo->id]));
 	(philo->meals_eaten)++;
 	if (params->must_eat && philo->meals_eaten == params->must_eat)
 		inc_stop(params);
 	print_status(philo->id, params, EATING);
 	philo->last_meal = ft_gettime();
 	ft_sleep(params->time_to_eat);
-    pthread_mutex_unlock(&(params->protection[philo->id]));
+	pthread_mutex_unlock(&(params->protection[philo->id]));
 }
 
 void	sleeping(t_philo_info *philo, t_parameters *params)

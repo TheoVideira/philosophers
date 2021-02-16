@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 16:39:06 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 16:41:04 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 static int	ft_isdigit(int c)
@@ -10,7 +22,7 @@ static int	ft_isspace(int c)
 	return (c == 32 || !(c < '\t' || c > '\r'));
 }
 
-int		ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
 	int	i;
 	int	res;
@@ -33,7 +45,7 @@ int		ft_atoi(const char *str)
 	return (res);
 }
 
-void	ft_sleep(long milliseconds)
+void		ft_sleep(long milliseconds)
 {
 	long start;
 
@@ -44,10 +56,10 @@ void	ft_sleep(long milliseconds)
 	}
 }
 
-long	ft_gettime(void)
-{	
+long		ft_gettime(void)
+{
 	static struct timeval timeval;
-	
+
 	gettimeofday(&timeval, NULL);
-	return (timeval.tv_sec * 1000 + timeval.tv_usec / 1000);	
+	return (timeval.tv_sec * 1000 + timeval.tv_usec / 1000);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simulation.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 17:21:06 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 17:22:09 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_three.h"
 
 static void	routine(void *philosopher)
@@ -10,13 +22,13 @@ static void	routine(void *philosopher)
 	pthread_detach(monitor);
 	philo = (t_philo_info *)philosopher;
 	params = philo->parameters;
-	while(!(params->someone_died) && !get_stop(params))
+	while (!(params->someone_died) && !get_stop(params))
 	{
 		get_forks(philo, params);
-        eating(philo, params);
+		eating(philo, params);
 		put_forks(params);
-        sleeping(philo, params);
-        thinking(philo, params);				
+		sleeping(philo, params);
+		thinking(philo, params);
 	}
 	if (params->someone_died)
 		exit(EXIT_DIED);
@@ -50,7 +62,7 @@ void		launch_simulation(t_philo_info *philo_info, pid_t **philo,
 	int	i;
 
 	i = -1;
-	while(++i < nb_philos)
+	while (++i < nb_philos)
 	{
 		(*philo)[i] = fork();
 		if ((*philo)[i] == 0)

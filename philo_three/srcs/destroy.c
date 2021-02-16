@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   destroy.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 17:18:22 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 17:18:41 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_three.h"
 
 static void	ft_destroy_semaphores(t_parameters *params)
@@ -43,7 +55,7 @@ void		ft_destroy(t_parameters *params, t_philo_info **ph_info,
 			if (params->protec_name[i])
 				free(params->protec_name[i]);
 			else
-				break;
+				break ;
 		}
 		free(params->protec_name);
 	}

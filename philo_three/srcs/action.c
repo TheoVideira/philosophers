@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   action.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 17:17:53 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 17:18:13 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_three.h"
 
 void	get_forks(t_philo_info *philo, t_parameters *params)
 {
 	sem_wait(params->forks);
 	print_status(philo->id, params, TAKING_FORKS);
-	sem_wait(params->forks);	
+	sem_wait(params->forks);
 	print_status(philo->id, params, TAKING_FORKS);
 }
 
@@ -24,7 +36,7 @@ void	eating(t_philo_info *philo, t_parameters *params)
 		inc_stop(params);
 	philo->last_meal = ft_gettime();
 	ft_sleep(params->time_to_eat);
-    sem_post(params->protection[philo->id]);
+	sem_post(params->protection[philo->id]);
 }
 
 void	sleeping(t_philo_info *philo, t_parameters *params)

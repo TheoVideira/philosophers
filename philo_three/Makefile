@@ -1,7 +1,7 @@
 NAME			= philo_three.out
 
 CC				= clang
-CFLAGS			= -Wall -Wextra -Werror -pthread
+CFLAGS			= -Wall -Wextra -Werror -pthread -g3
 
 SRCS_DIR		= srcs
 SRCS_FILES		= init.c main.c utils.c simulation.c stop.c action.c monitor.c print.c destroy.c semaphores.c utils2.c

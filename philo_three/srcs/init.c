@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 17:18:56 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 17:19:09 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_three.h"
 
 int	check_inputs(int ac, char **av)
@@ -45,7 +57,7 @@ int	init_philosophers(t_philo_info **philo_info, t_parameters *params)
 	if (!(*philo_info))
 		return (0);
 	params->start_time = ft_gettime();
-	while(++i < params->nb_philos)
+	while (++i < params->nb_philos)
 	{
 		(*philo_info)[i].id = i;
 		(*philo_info)[i].meals_eaten = 0;

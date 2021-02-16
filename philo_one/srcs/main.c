@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/02/16 16:33:36 by tvideira          #+#    #+#             */
+/*   Updated: 2021/02/16 16:33:48 by tvideira         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_one.h"
 
 int	main(int ac, char **av)
@@ -13,7 +25,7 @@ int	main(int ac, char **av)
 			printf("You need at least 4 arguments, you had %d\n", ac - 1);
 		else
 			printf("You need at most 5 arguments, you had %d\n", ac - 1);
-		return(1);
+		return (1);
 	}
 	ft_failsafe(&params, &philo_info, &philo, &monitor);
 	if (!check_inputs(ac, av) || !init_parameters(&params, av)
