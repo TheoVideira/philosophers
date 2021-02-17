@@ -6,7 +6,7 @@
 /*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 17:17:53 by tvideira          #+#    #+#             */
-/*   Updated: 2021/02/16 17:18:13 by tvideira         ###   ########.fr       */
+/*   Updated: 2021/02/17 09:09:13 by tvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	eating(t_philo_info *philo, t_parameters *params)
 	print_status(philo->id, params, EATING);
 	if (params->must_eat)
 		(philo->meals_eaten)++;
-	if (params->must_eat && philo->meals_eaten == params->must_eat)
-		inc_stop(params);
 	philo->last_meal = ft_gettime();
 	ft_sleep(params->time_to_eat);
 	sem_post(params->protection[philo->id]);

@@ -6,7 +6,7 @@
 /*   By: tvideira <tvideira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 17:21:06 by tvideira          #+#    #+#             */
-/*   Updated: 2021/02/16 17:22:09 by tvideira         ###   ########.fr       */
+/*   Updated: 2021/02/17 09:13:18 by tvideira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ static void	routine(void *philosopher)
 	pthread_detach(monitor);
 	philo = (t_philo_info *)philosopher;
 	params = philo->parameters;
-	while (!(params->someone_died) && !get_stop(params))
+	while (!(params->someone_died))
 	{
 		get_forks(philo, params);
 		eating(philo, params);
 		put_forks(params);
+		if (params->must_eat && philo->meals_eaten == params->must_eat)
+			break ;
 		sleeping(philo, params);
 		thinking(philo, params);
 	}
